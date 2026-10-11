@@ -4,6 +4,8 @@
 
 A faster, smarter replacement for the macOS app launcher. Search, filter and sort your apps by install source (Brew, App Store, DMG), icon color, name, date, usage, last launch or size. Lives in the menu bar, 11 languages.
 
+![Launchpad+](docs/preview.png)
+
 ## Features
 
 - Opens with a **four-finger pinch**, **⌥Space** or the menu bar icon
