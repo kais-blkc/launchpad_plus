@@ -24,6 +24,24 @@
 - macOS 14 или новее, Apple Silicon
 - Command Line Tools (сам Xcode **не нужен**): `xcode-select --install`
 
+## Скачать
+
+1. Скачайте последний `Launchpad-Plus-<версия>.dmg` на странице [Releases](https://github.com/kais-blkc/launchpad_plus/releases).
+2. Откройте DMG и перетащите **Launchpad+** в папку **Программы** (Applications).
+3. Запустите Launchpad+ из «Программ» (если macOS не даёт открыть, смотрите ниже).
+
+### Как открыть неподписанное приложение
+
+Релизные сборки не подписаны платным сертификатом Apple Developer ID и не прошли нотаризацию, поэтому Gatekeeper блокирует первый запуск скачанной копии сообщением вроде *«Apple не удалось проверить, что Launchpad+ не содержит вредоносного ПО»*. Это ожидаемо. Сделайте один раз любое из двух:
+
+- **Системные настройки:** откройте *Конфиденциальность и безопасность*, прокрутите вниз до сообщения о Launchpad+ и нажмите **Всё равно открыть**, затем подтвердите.
+- **Терминал:** снимите флаг карантина и откройте приложение как обычно:
+  ```sh
+  xattr -dr com.apple.quarantine /Applications/Launchpad+.app
+  ```
+
+Если не хотите доверять готовой сборке, соберите её сами (см. [Установка](#установка)): копию, собранную на вашем Mac, система не блокирует. Скачанный файл можно проверить по `.sha256`, приложенному к каждому релизу: `shasum -a 256 -c Launchpad-Plus-<версия>.dmg.sha256`.
+
 ## Установка
 
 ```sh
@@ -42,6 +60,7 @@ make install
 | `make build` | Только собирает `build/Launchpad+.app` |
 | `make stop` | Завершает приложение |
 | `make install` | Собирает и устанавливает в `/Applications` |
+| `make dmg` | Собирает релизный DMG в `build/` |
 
 Чтобы приложение запускалось само, откройте иконку в меню-баре (или шестерёнку в окне) и включите **Запускать при входе**. Делайте это из копии, установленной в `/Applications`.
 
@@ -103,5 +122,16 @@ make install
 Sources/LaunchpadPlus/   код приложения (SwiftUI + AppKit)
 Resources/               Info.plist, исходник иконки, переводы (*.lproj)
 scripts/                 build.sh, make_icon.swift, check_strings.py
-Makefile                 run / build / stop / install
+Makefile                 run / build / stop / install / dmg
 ```
+
+## Выпуск релиза (для разработчика)
+
+Версия хранится в файле `VERSION`. Пуш тега запускает сборку DMG на GitHub Actions и публикует релиз:
+
+```sh
+echo "0.2.0" > VERSION && git commit -am "Bump version to 0.2.0"
+git tag v0.2.0 && git push origin main v0.2.0
+```
+
+`make dmg` собирает `build/Launchpad-Plus-<версия>.dmg` локально.

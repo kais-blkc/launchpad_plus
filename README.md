@@ -24,6 +24,24 @@ It lives in the menu bar (no Dock icon), is written in Swift/SwiftUI and ships i
 - macOS 14 or newer, Apple Silicon
 - Command Line Tools (Xcode itself is **not** required): `xcode-select --install`
 
+## Download
+
+1. Download the latest `Launchpad-Plus-<version>.dmg` from the [Releases](https://github.com/kais-blkc/launchpad_plus/releases) page.
+2. Open the DMG and drag **Launchpad+** into the **Applications** folder.
+3. Open Launchpad+ from Applications (see below if macOS refuses to open it).
+
+### Opening an unsigned app
+
+Release builds are not signed with a paid Apple Developer ID and are not notarized, so macOS Gatekeeper blocks the first launch of a downloaded copy with a message like *"Apple could not verify Launchpad+ is free of malware"*. This is expected. Do one of the following, once:
+
+- **System Settings:** open *Privacy & Security*, scroll down to the message about Launchpad+ and click **Open Anyway**, then confirm.
+- **Terminal:** remove the quarantine flag and open the app normally:
+  ```sh
+  xattr -dr com.apple.quarantine /Applications/Launchpad+.app
+  ```
+
+If you prefer not to trust a prebuilt binary, build it yourself (see [Installation](#installation)): a copy built on your own Mac is not blocked. You can also verify the download against the `.sha256` file attached to each release: `shasum -a 256 -c Launchpad-Plus-<version>.dmg.sha256`.
+
 ## Installation
 
 ```sh
@@ -42,6 +60,7 @@ Other commands:
 | `make build` | Build `build/Launchpad+.app` only |
 | `make stop` | Quit the running app |
 | `make install` | Build and install into `/Applications` |
+| `make dmg` | Build a release DMG into `build/` |
 
 To start it automatically, open the menu bar icon (or the gear in the overlay) and enable **Launch at login**. Do this from the copy installed in `/Applications`.
 
@@ -103,6 +122,17 @@ To start it automatically, open the menu bar icon (or the gear in the overlay) a
 Sources/LaunchpadPlus/   app code (SwiftUI + AppKit)
 Resources/               Info.plist, app icon source, translations (*.lproj)
 scripts/                 build.sh, make_icon.swift, check_strings.py
-Makefile                 run / build / stop / install
+Makefile                 run / build / stop / install / dmg
 ```
 # launchpad_plus
+
+## Releasing (maintainers)
+
+The version lives in the `VERSION` file. Pushing a tag builds the DMG on GitHub Actions and publishes a release:
+
+```sh
+echo "0.2.0" > VERSION && git commit -am "Bump version to 0.2.0"
+git tag v0.2.0 && git push origin main v0.2.0
+```
+
+`make dmg` builds `build/Launchpad-Plus-<version>.dmg` locally.

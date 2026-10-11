@@ -1,5 +1,5 @@
 .DEFAULT_GOAL := run
-.PHONY: build run stop install
+.PHONY: build run stop install dmg
 
 build:
 	scripts/build.sh
@@ -16,3 +16,7 @@ install: stop build
 	rm -rf "/Applications/Launchpad+.app"
 	cp -R "build/Launchpad+.app" /Applications/
 	open "/Applications/Launchpad+.app"
+
+# Собрать DMG для релиза: build/Launchpad-Plus-<версия>.dmg (версия — из файла VERSION)
+dmg:
+	scripts/make_dmg.sh

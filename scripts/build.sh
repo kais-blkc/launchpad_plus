@@ -11,6 +11,11 @@ rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BIN" "$APP/Contents/MacOS/LaunchpadPlus"
 cp Resources/Info.plist "$APP/Contents/Info.plist"
+
+# Версия: переменная VERSION (в CI берётся из тега) или файл VERSION
+VERSION=${VERSION:-$(tr -d '[:space:]' < VERSION)}
+/usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString $VERSION" "$APP/Contents/Info.plist"
+/usr/libexec/PlistBuddy -c "Set :CFBundleVersion $VERSION" "$APP/Contents/Info.plist"
 cp -R Resources/*.lproj "$APP/Contents/Resources/"
 
 # Иконка приложения: Resources/AppIcon-source.png (1024x1024) -> форма macOS -> AppIcon.icns.
