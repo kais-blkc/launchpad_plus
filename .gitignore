@@ -5,3 +5,8 @@ DerivedData/
 xcuserdata/
 .swiftpm/
 .build/
+
+# Claude Code
+.claude/
+CLAUDE.md
+CLAUDE.local.md

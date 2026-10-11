@@ -27,7 +27,7 @@ It lives in the menu bar (no Dock icon), is written in Swift/SwiftUI and ships i
 ## Installation
 
 ```sh
-git clone <repository-url> launchpad-plus
+git clone https://github.com/kais-blkc/launchpad_plus.git launchpad-plus
 cd launchpad-plus
 make install
 ```
